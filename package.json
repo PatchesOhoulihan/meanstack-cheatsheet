@@ -1,0 +1,19 @@
+{
+  "name": "testground",
+  "version": "1.0.0",
+  "description": "Testing trivial node/epress stuff",
+  "main": "app.js",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "author": "Schmalte",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.1",
+    "express-handlebars": "^3.0.0"
+  }
+}
