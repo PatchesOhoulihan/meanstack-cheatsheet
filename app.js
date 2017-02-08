@@ -53,6 +53,27 @@ app.use(function(req,res,next){
     next();
 });
 
+app.get('/file-upload', function(req,res){
+    var now = new Date();
+    res.render('upload', {
+        year: now.getFullYear(),
+        month: now.getMonth()
+    });
+});
+
+app.post('/file-upload/:year/:month', function(req, res){
+    //DB Mockup for later DB integration
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, file){
+        if(err){
+            return res.redirect(303, '/error');
+        }
+    console.log('Received File');
+    console.log(file);
+    res.redirect(303, '/thankyou');
+    });
+});
+
 app.get('/about', function(req, res){
     res.render('about');
     console.log("Request for About");
@@ -100,6 +121,6 @@ app.use(function(err, req, res, next){
 
 app.listen(app.get('port'), function(){
     console.log('Express started on Localhost:' + app.get('port') + ' press Ctrl-C to terminate');
-})
+});
 
 //console.log(app);
