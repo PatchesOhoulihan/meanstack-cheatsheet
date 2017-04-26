@@ -7,12 +7,20 @@ var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 var formidable = require('formidable');
 var credentials = require('./credentials');
+var session = require('express-session');
+var parseurl = require('parseurl');
 
 
 
 //-----------------------------------------------------------------
 // App init
 //-----------------------------------------------------------------
+
+app.use(session({
+    resave: false,
+    saveUninitializeled: true,
+    secret: credentials.cookieSecret
+}));
 
 app.use(require('cookie-parser')(credentials.cookieSecret))
 app.use(require('body-parser').urlencoded({extended: true}));
@@ -34,6 +42,24 @@ app.set('Schnitzel', 'Lecker');
 //-----------------------------------------------------------------
 // Defining Route Pipeline
 //-----------------------------------------------------------------
+
+app.use(function(req, res, next){
+    var views = req.session.views;
+
+    if(!views){
+        views = req.session.views = {}
+    }
+
+    var pathname = parseurl(req).pathname;
+
+    views[pathname] = (views[pathname] || 0) + 1;
+
+    next();
+});
+
+app.get('/viewcount', function(req, res, next){
+    res.send('You viewed this page ' + req.session.views['/viewcount'] + ' times');
+});
 
 //Experimental code
 app.use(function(req,res,next){
@@ -94,6 +120,20 @@ app.post('/process', function(req,res){
     console.log('Email : ' + req.body.email);
     console.log('Question : ' + req.body.ques);
     res.redirect(303, '/thankyou');
+});
+
+app.get('/cookie' ,function(req, res){
+    res.cookie('CookieKey', 'value12345', {expire: new Date() + 9999}).render('setcookie');
+});
+
+app.get('/listcookies', function(req, res){
+    console.log(req.cookies);
+    res.render('getcookies', {cookie: req.cookies.CookieKey});
+});
+
+app.get('/deletecookie', function(req,res){
+    console.log('Delete Cookie (show nothing when deleted): ' +  req.cookies.CookieKey);
+    res.clearCookie('CookieKey').render('deletecookie');
 });
 
 //-----------------------------------------------------------------
