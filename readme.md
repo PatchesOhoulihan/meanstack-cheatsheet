@@ -22,6 +22,8 @@ Remember this is a executable Cheatsheet, in this configuration this is no Code 
 
 * [Express](http://expressjs.com) - The web framework used
 * [NPM](https://www.npmjs.com/) - Dependency Management
+* [Bootstap](http://getbootstrap.com/) - frontend Bootstrapping
+* [Jquery](https://jquery.com/) - Boostrap Dependency
 * [handlebars](http://handlebarsjs.com/) - View Engine
 * [Express body-parser](https://github.com/expressjs/body-parser) - For Post Requests
 * [Express cookie-parser](https://github.com/expressjs/cookie-parser) - For Cookie Management.
